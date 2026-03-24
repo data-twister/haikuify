@@ -33,6 +33,12 @@ Haikunator.build(9999, ".") # => "frosty.leaf.8347"
 
 # No token, no delimiter
 Haikunator.build(0, "") # => "twilightbreeze"
+
+# Text token, no delimiter
+Haikunator.build("suffix", "") # => "twilightbreezesuffix"
+
+# Text token, different delimiter
+Haikunator.build("suffix", ".") # => "frosty.leaf.suffix"
 ```
 
 License

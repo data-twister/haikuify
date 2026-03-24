@@ -5,13 +5,31 @@ defmodule Haikunator do
   Generate Heroku-like memorable random names to use in your apps or anywhere else.
   """
 
-  @adjectives Application.compile_env(:haikunator, :adjectives, [])
-  @nouns Application.compile_env(:haikunator, :nouns, [])
+  @adjectives Application.compile_env(:haikunator, :adjectives, ~w(
+  autumn hidden bitter misty silent empty dry dark summer
+  icy delicate quiet white cool spring winter patient
+  twilight dawn crimson wispy weathered blue billowing
+  broken cold damp falling frosty green long late lingering
+  bold little morning muddy old red rough still small
+  sparkling throbbing shy wandering withered wild black
+  young holy solitary fragrant aged snowy proud floral
+  restless divine polished ancient purple lively nameless
+))
+  @nouns Application.compile_env(:haikunator, :nouns, ~w(
+   waterfall river breeze moon rain wind sea morning
+   snow lake sunset pine shadow leaf dawn glitter forest
+   hill cloud meadow sun glade bird brook butterfly
+   bush dew dust field fire flower firefly feather grass
+   haze mountain night pond darkness snowflake silence
+   sound sky shape surf thunder violet water wildflower
+   wave water resonance sun wood dream cherry tree fog
+   frost voice paper frog smoke star
+))
 
   @doc """
   Generate a memorable name.
 
-  `range` is the first parameter, and sets the range for the token (i.e. the number) from 0 to n.
+  `token` is the first parameter, and sets either a string suffix or the range for the token (i.e. the number) from 0 to n.
   Defaults to `9999`.
 
   `delimiter` is the second parameter, and it's the string that joins the sections.
@@ -33,16 +51,37 @@ defmodule Haikunator do
 
       # No token, no delimiter
       iex> Haikunator.build(0, "") # => "twilightbreeze"
+
+      # Text token, no delimiter
+      iex> Haikunator.build("suffix", "") # => "twilightbreezesuffix"
+
+      # Text token, different delimiter
+      iex> Haikunator.build("suffix", ".") # => "frosty.leaf.suffix"
   """
   @spec build(integer, String.t()) :: String.t()
-  def build(range \\ 9999, delimiter \\ "-") do
+  def build(token, delimiter \\ "-") do
     :rand.seed(:exsplus)
-    token = if range > 0, do: random(range)
+    token = token(token)
 
     [@adjectives, @nouns]
     |> Enum.map(&sample/1)
     |> Enum.concat(List.wrap(token))
     |> Enum.join(delimiter)
+  end
+
+  @spec token(integer) :: integer
+  defp token(params) when is_integer(params) do
+    token =
+      case params do
+        x when x > 0 -> random(params)
+        0 -> nil
+        _ -> random(9999)
+      end
+  end
+
+  @spec token(string) :: string
+  defp token(params) do
+    params
   end
 
   @spec random(integer) :: integer
