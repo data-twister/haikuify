@@ -38,7 +38,7 @@ defmodule Haikuify do
   ## Examples
 
       # Default
-      iex> Haikuify.build # => "morning-star-6817"
+      iex> Haikuify.build # => "morning-star"
 
       # Token range
       iex> Haikuify.build(100) # => "summer-dawn-24"
@@ -57,11 +57,14 @@ defmodule Haikuify do
 
       # Text token, different delimiter
       iex> Haikuify.build("suffix", ".") # => "frosty.leaf.suffix"
+
+      # Text token with spaces, different delimiter
+      iex> Haikuify.build("end of suffix", ".") # => "frosty.leaf.and.of.suffix"
   """
-  @spec build(integer, String.t()) :: String.t()
-  def build(token, delimiter \\ "-") do
+
+  def build(token, args, delimiter) do
     :rand.seed(:exsplus)
-    token = token(token)
+    token = token(token, args, delimiter)
 
     [@adjectives, @nouns]
     |> Enum.map(&sample/1)
@@ -69,8 +72,49 @@ defmodule Haikuify do
     |> Enum.join(delimiter)
   end
 
-  @spec token(integer) :: integer
-  defp token(params) when is_integer(params) do
+  @spec build(integer, String.t()) :: String.t()
+  def build(max, delimiter) when is_integer(max) do
+    :rand.seed(:exsplus)
+
+    [@adjectives, @nouns]
+    |> Enum.map(&sample/1)
+    |> Enum.concat(List.wrap(token(max, "", "")))
+    |> Enum.join(delimiter)
+  end
+
+  @spec build(String.t(), String.t()) :: String.t()
+  def build(token, delimiter) when is_bitstring(token) do
+    :rand.seed(:exsplus)
+    token = token(token, " ", delimiter)
+
+    [@adjectives, @nouns]
+    |> Enum.map(&sample/1)
+    |> Enum.concat(List.wrap(token))
+    |> Enum.join(delimiter)
+  end
+
+  @spec build(integer, String.t()) :: String.t()
+  def build(max) when is_integer(max) do
+    :rand.seed(:exsplus)
+    delimiter = Application.get_env(:haikuify, :delimiter) || "-"
+
+    [@adjectives, @nouns]
+    |> Enum.map(&sample/1)
+    |> Enum.concat(List.wrap(token(max, "", "")))
+    |> Enum.join(delimiter)
+  end
+
+  @spec build(string, String.t()) :: String.t()
+  def build(delimiter \\ "-") when is_bitstring(delimiter) do
+    :rand.seed(:exsplus)
+
+    [@adjectives, @nouns]
+    |> Enum.map(&sample/1)
+    |> Enum.concat(List.wrap(token()))
+    |> Enum.join(delimiter)
+  end
+
+  def token(params, args, separator) when is_integer(params) do
     token =
       case params do
         x when x > 0 -> random(params)
@@ -79,8 +123,12 @@ defmodule Haikuify do
       end
   end
 
-  defp token(params) do
-    params
+  def token(params, args, separator) when is_bitstring(params) do
+    params |> String.replace(args, separator)
+  end
+
+  defp token() do
+    nil
   end
 
   @spec random(integer) :: integer
