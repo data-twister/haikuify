@@ -1,6 +1,6 @@
 import Config
 
-config :haikunator, :nouns, ~w(
+config :haikuify, :nouns, ~w(
    waterfall river breeze moon rain wind sea morning
    snow lake sunset pine shadow leaf dawn glitter forest
    hill cloud meadow sun glade bird brook butterfly

@@ -1,9 +1,9 @@
-defmodule Haikunator.Mixfile do
+defmodule Haikuify.Mixfile do
   use Mix.Project
 
   def project do
     [
-      app: :haikunator,
+      app: :haikuify,
       description:
         "Generate Heroku-like memorable random names to use in your apps or anywhere else.",
       version: "1.1.0",
@@ -12,9 +12,9 @@ defmodule Haikunator.Mixfile do
       start_permanent: Mix.env() == :prod,
       deps: deps(),
       package: [
-        maintainers: ["Kash Nouroozi"],
+        maintainers: ["Jason Clark"],
         licenses: ["MIT"],
-        links: %{"GitHub" => "https://github.com/knrz/Haikunator"}
+        links: %{"GitHub" => "https://github.com/data-twister/haikuify"}
       ]
     ]
   end

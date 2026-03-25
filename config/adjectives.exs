@@ -1,6 +1,6 @@
 import Config
 
-config :haikunator, :adjectives, ~w(
+config :haikuify, :adjectives, ~w(
   autumn hidden bitter misty silent empty dry dark summer
   icy delicate quiet white cool spring winter patient
   twilight dawn crimson wispy weathered blue billowing

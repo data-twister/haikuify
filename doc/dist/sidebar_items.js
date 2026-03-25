@@ -1,1 +1,0 @@
-sidebarNodes={"exceptions":[],"extras":[{"id":"extra-api-reference","title":"API Reference","headers":[]}],"modules":[{"id":"Haikunator","title":"Haikunator","functions":[{"id":"build/2","anchor":"build/2"}]}],"protocols":[]}

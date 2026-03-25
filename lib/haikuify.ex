@@ -1,11 +1,11 @@
-defmodule Haikunator do
+defmodule Haikuify do
   @moduledoc """
-  # Haikunator
+  # Haikuify
 
   Generate Heroku-like memorable random names to use in your apps or anywhere else.
   """
 
-  @adjectives Application.compile_env(:haikunator, :adjectives, ~w(
+  @adjectives Application.compile_env(:haikuify, :adjectives, ~w(
   autumn hidden bitter misty silent empty dry dark summer
   icy delicate quiet white cool spring winter patient
   twilight dawn crimson wispy weathered blue billowing
@@ -15,7 +15,7 @@ defmodule Haikunator do
   young holy solitary fragrant aged snowy proud floral
   restless divine polished ancient purple lively nameless
 ))
-  @nouns Application.compile_env(:haikunator, :nouns, ~w(
+  @nouns Application.compile_env(:haikuify, :nouns, ~w(
    waterfall river breeze moon rain wind sea morning
    snow lake sunset pine shadow leaf dawn glitter forest
    hill cloud meadow sun glade bird brook butterfly
@@ -38,25 +38,25 @@ defmodule Haikunator do
   ## Examples
 
       # Default
-      iex> Haikunator.build # => "morning-star-6817"
+      iex> Haikuify.build # => "morning-star-6817"
 
       # Token range
-      iex> Haikunator.build(100) # => "summer-dawn-24"
+      iex> Haikuify.build(100) # => "summer-dawn-24"
 
       # Don't include the token
-      iex> Haikunator.build(0) # => "ancient-frost"
+      iex> Haikuify.build(0) # => "ancient-frost"
 
       # Use a different delimiter
-      iex> Haikunator.build(9999, ".") # => "frosty.leaf.8347"
+      iex> Haikuify.build(9999, ".") # => "frosty.leaf.8347"
 
       # No token, no delimiter
-      iex> Haikunator.build(0, "") # => "twilightbreeze"
+      iex> Haikuify.build(0, "") # => "twilightbreeze"
 
       # Text token, no delimiter
-      iex> Haikunator.build("suffix", "") # => "twilightbreezesuffix"
+      iex> Haikuify.build("suffix", "") # => "twilightbreezesuffix"
 
       # Text token, different delimiter
-      iex> Haikunator.build("suffix", ".") # => "frosty.leaf.suffix"
+      iex> Haikuify.build("suffix", ".") # => "frosty.leaf.suffix"
   """
   @spec build(integer, String.t()) :: String.t()
   def build(token, delimiter \\ "-") do
@@ -79,7 +79,6 @@ defmodule Haikunator do
       end
   end
 
-  @spec token(string) :: string
   defp token(params) do
     params
   end
