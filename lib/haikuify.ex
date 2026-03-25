@@ -104,7 +104,6 @@ defmodule Haikuify do
     |> Enum.join(delimiter)
   end
 
-  @spec build(string, String.t()) :: String.t()
   def build(delimiter \\ "-") when is_bitstring(delimiter) do
     :rand.seed(:exsplus)
 
@@ -124,7 +123,12 @@ defmodule Haikuify do
   end
 
   def token(params, args, separator) when is_bitstring(params) do
-    params |> String.replace(args, separator)
+    params
+    |> String.trim()
+    |> String.split(args)
+    |> Enum.reject(fn x -> x == separator end)
+    |> Enum.map(fn x -> String.replace(x, separator, "") end)
+    |> Enum.join(separator)
   end
 
   defp token() do
